@@ -1,0 +1,23 @@
+<div id="topbar">Welcome, <span id="username"></span></div>
+<textarea id="postContent"></textarea>
+<button onclick="createPost()">Post</button>
+<div id="feed"></div>
+
+<script>
+fetch('C:/xampp/htdocs/linkedin_clone/backend/get_posts.php')
+  .then(res => res.json())
+  .then(data => {
+    const feed = document.getElementById('feed');
+    data.forEach(post => {
+      feed.innerHTML += `<p><strong>${post.name}</strong>: ${post.content} (${post.created_at})</p>`;
+    });
+  });
+
+function createPost() {
+  const content = document.getElementById('postContent').value;
+  fetch('C:/xampp/htdocs/linkedin_clone/backend/create_post.php', {
+    method: 'POST',
+    body: new URLSearchParams({ content })
+  }).then(() => location.reload());
+}
+</script>
